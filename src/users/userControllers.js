@@ -6,7 +6,7 @@ exports.addUser = async (req, res) => {
     const newUser = new User(req.body);
     const token = newUser.generateAuthToken();
     await newUser.save();
-    res.status(201).send({ user: newUser.name, token });
+    res.status(201).send({ user: newUser.name, token, message: newUser.name + " signed up" });
   }
   catch (error)
   {
@@ -29,7 +29,7 @@ exports.login = async (req, res) => {
     const user = await User.findByCredentials(email, password);
     const token = user.generateAuthToken();
     /*res.status(200).send({ user: user.name, token });*/ //<--old version
-    res.status(200).send({ user: user.name });
+    res.status(200).send({ user: user.name, message: user.name + " logged in" });
   }
   catch (error)
   {
@@ -72,7 +72,25 @@ exports.removeUser = async (req, res) => {
 }
 
 
-exports.updateUser = async (req, res) => {
+exports.updateUserInfo = async (req, res) => {
+
+  const { email, name, desiredWeight } = req.body;
+
+  try
+  {
+    const query = { "email": email };
+    const update = { $set: {"name": name, "desiredWeight": desiredWeight} };
+    await User.updateOne(query, update);
+
+    res.status(200).send({ message: name + " name/ desired weight updated" });
+  }
+  catch (error)
+  {
+    res.status(400).send({ error: error.message });
+  }
+}
+
+exports.updatePassword = async (req, res) => {
 
   const { email, password } = req.body;
 
@@ -82,7 +100,25 @@ exports.updateUser = async (req, res) => {
     const update = { $set: {"password": password} };
     await User.updateOne(query, update);
 
-    res.status(200).send({ message: email+" updated" });
+    res.status(200).send({ message: email + " password updated" });
+  }
+  catch (error)
+  {
+    res.status(400).send({ error: error.message });
+  }
+}
+
+exports.updateCurrentWeight = async (req, res) => {
+
+  const { email, currentWeight } = req.body;
+
+  try
+  {
+    const query = { "email": email };
+    const update = { $set: {"currentWeight": currentWeight} };
+    await User.updateOne(query, update);
+
+    res.status(200).send({ message: email + " current weight updated" });
   }
   catch (error)
   {
