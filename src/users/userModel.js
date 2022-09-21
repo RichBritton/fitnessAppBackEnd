@@ -29,6 +29,21 @@ const userSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  height:
+  {
+    type: Number,
+    required: true,
+  },
+  age:
+  {
+    type: Number,
+    required: true,
+  },
+  sex:
+  {
+    type: String,
+    required: true,
+  },
 });
 
 userSchema.statics.findByCredentials = async (email, password) => {
