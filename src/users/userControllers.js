@@ -1,4 +1,5 @@
 const User = require("./userModel");
+const jwt = require("jsonwebtoken");
 
 exports.addUser = async (req, res) => {
   try
@@ -28,8 +29,7 @@ exports.login = async (req, res) => {
   {
     const user = await User.findByCredentials(email, password);
     const token = user.generateAuthToken();
-    /*res.status(200).send({ user: user.name, token });*/ //<--old version
-    res.status(200).send({ userEmail: user.email, message: user.name + " logged in" });
+    res.status(200).send({ userEmail: user.email, token, message: user.name + " logged in" });
   }
   catch (error)
   {
@@ -125,3 +125,19 @@ exports.updateCurrentWeight = async (req, res) => {
     res.status(400).send({ error: error.message });
   }
 }
+
+
+exports.findUser = async (req, res) => {
+  try
+  {
+    const token = req.header("Authorization").replace("Bearer ", "");
+    const decoded = jwt.verify(token, "some secret");
+    const user = await User.findOne({ _id: decoded._id });
+    res.status(200).send({username: user})
+  }
+  catch (error)
+  {
+      console.log(error)
+      res.status(500).send({ error: error.message });
+  }
+} 

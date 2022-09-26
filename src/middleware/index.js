@@ -23,22 +23,30 @@ exports.hashPassword = async (req, res, next) => {
 };
 
 exports.tokenCheck = async (req, res, next) => {
-  try
+  if (req.header("Authorization"))
   {
-    const token = req.header("Authorization").replace("Bearer ", "");
-    const decoded = jwt.verify(token, "some secret");
-    const user = await User.findOne({ _id: decoded._id });
-
-    if (!user)
+    try
     {
-      throw new Error("User does not exist");
-    }
+      const token = req.header("Authorization").replace("Bearer ", "");
+      const decoded = jwt.verify(token, "some secret");
+      const user = await User.findOne({ _id: decoded._id });
 
-    req.user = user;
-    next();
+      if (!user)
+      {
+        throw new Error("User does not exist");
+      }
+
+      req.user = user;
+      next();
+    }
+    catch (error)
+    {
+      res.status(500).send({ error: "Please log in" });
+    }
   }
-  catch (error)
+  else
   {
-    res.status(500).send({ error: "Please log in" });
+    console.log("no token passed in headers")
+    res.status(500).send({ error: "no token passed in headers" });
   }
 };
