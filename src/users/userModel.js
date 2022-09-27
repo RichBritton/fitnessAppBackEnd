@@ -44,6 +44,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  calories:
+  {
+    type: Number,
+    default: 0
+  }
 });
 
 userSchema.statics.findByCredentials = async (email, password) => {

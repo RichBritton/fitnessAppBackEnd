@@ -74,12 +74,12 @@ exports.removeUser = async (req, res) => {
 
 exports.updateUserInfo = async (req, res) => {
 
-  const { email, name, desiredWeight, sex, height, age } = req.body;
+  const { email, name, desiredWeight, sex, height, age, calories} = req.body;
 
   try
   {
     const query = { "email": email };
-    const update = { $set: {"name": name, "desiredWeight": desiredWeight, "sex": sex, "height": height, "age": age} };
+    const update = { $set: {"name": name, "desiredWeight": desiredWeight, "sex": sex, "height": height, "age": age,"calories":calories} };
     await User.updateOne(query, update);
 
     res.status(200).send({ message: name + " info updated" });
@@ -134,6 +134,20 @@ exports.findUser = async (req, res) => {
     const decoded = jwt.verify(token, "some secret");
     const user = await User.findOne({ _id: decoded._id });
     res.status(200).send({username: user})
+  }
+  catch (error)
+  {
+      console.log(error)
+      res.status(500).send({ error: error.message });
+  }
+} 
+exports.findUserInfo = async (req, res) => {
+  try
+  {
+    const token = req.header("Authorization").replace("Bearer ", "");
+    const decoded = jwt.verify(token, "some secret");
+    const user = await User.findOne({ _id: decoded._id });
+    res.status(200).send(user)
   }
   catch (error)
   {
