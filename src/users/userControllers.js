@@ -57,7 +57,8 @@ exports.listUsers = async (req, res) => {
 
 exports.removeUser = async (req, res) => {
   const { email, password } = req.body;
-
+    console.log("remove user")
+    console.log(req.body)
   try
   {
     const user = await User.findByCredentials(email, password);
