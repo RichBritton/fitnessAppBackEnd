@@ -22,22 +22,22 @@ const userSchema = new mongoose.Schema({
   currentWeight:
   {
     type: Number,
-    required: true,
+    default: 60
   },
   desiredWeight:
   {
     type: Number,
-    required: true,
+    default: 60
   },
   height:
   {
     type: Number,
-    required: true,
+    default: 170
   },
   age:
   {
     type: Number,
-    required: true,
+    default: 18
   },
   sex:
   {
