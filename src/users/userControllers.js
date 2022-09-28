@@ -146,7 +146,7 @@ exports.findUserInfo = async (req, res) => {
   try
   {
     const token = req.header("Authorization").replace("Bearer ", "");
-    const decoded = jwt.verify(token, "some secret");
+    const decoded = jwt.verify(token, process.env.SECRET);
     const user = await User.findOne({ _id: decoded._id });
     res.status(200).send(user)
   }
