@@ -156,3 +156,18 @@ exports.findUserInfo = async (req, res) => {
       res.status(500).send({ error: error.message });
   }
 } 
+exports.listUsersCals = async (req, res) => {
+  try
+  {
+      const listUsers = await User.find({});
+      const usernames = listUsers.map((users) => {
+          return users
+      })
+      res.status(200).send({users: usernames})
+  }
+  catch (error)
+  {
+      console.log(error)
+      res.status(500).send({ error: error.message });
+  }
+}  
