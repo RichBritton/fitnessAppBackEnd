@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { addUser, login, listUsers, removeUser, updateUserInfo, updatePassword,updateCurrentWeight,findUser,findUserInfo } = require("./userControllers");
+const { addUser, login, listUsers, removeUser, updateUserInfo, updatePassword,updateCurrentWeight,findUser,findUserInfo, listUsersCals } = require("./userControllers");
 const { hashPassword, tokenCheck } = require("../middleware");
 
 const userRouter = Router();
@@ -13,6 +13,7 @@ userRouter.patch("/user/updatePassword", [hashPassword], updatePassword); //<- l
 userRouter.patch("/user/updateCurrentWeight", updateCurrentWeight); //<- later needs tokencheck middleware
 userRouter.get("/user/findUserInfo", [tokenCheck], findUserInfo);
 userRouter.get("/user/findUser", [tokenCheck], findUser);
+userRouter.get("/user/listUsersCals",listUsersCals)
 
 
 module.exports = userRouter;
