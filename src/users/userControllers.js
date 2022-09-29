@@ -75,12 +75,12 @@ exports.removeUser = async (req, res) => {
 
 exports.updateUserInfo = async (req, res) => {
 
-  const { email, name, desiredWeight, sex, height, age, calories} = req.body;
+  const { email, name, desiredWeight, sex, height, age, calories, currentWeight} = req.body;
 
   try
   {
     const query = { "email": email };
-    const update = { $set: {"name": name, "desiredWeight": desiredWeight, "sex": sex, "height": height, "age": age,"calories":calories} };
+    const update = { $set: {"name": name, "desiredWeight": desiredWeight, "sex": sex, "height": height, "age": age,"calories":calories,"currentWeight":currentWeight} };
     await User.updateOne(query, update);
 
     res.status(200).send({ message: name + " info updated" });
