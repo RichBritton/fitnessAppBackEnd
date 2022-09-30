@@ -12,6 +12,11 @@ app.use(cors());
 app.use(express.json());
 app.use(userRouter);
 
+app.get("/health", (req, res) => {
+  res.status(200).send({ message: "API is working" });
+});
+
+
 app.get("/", tokenCheck, (req, res) => {
   res.status(200).send({ message: "You should only see if this if you are logged in" });
 });
